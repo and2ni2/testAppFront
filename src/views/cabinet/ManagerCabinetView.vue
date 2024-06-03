@@ -1,6 +1,12 @@
 <template>
-  <div class="manager_page container">
-111
+  <div class="manager_page">
+
+    <dashboard-layout>
+
+      Manager template components will be here
+
+    </dashboard-layout>
+
   </div>
 </template>
 
@@ -15,6 +21,7 @@ import {
   initTWE,
 } from "tw-elements";
 import router from "../../router";
+import DashboardLayout from "../../components/DashboardLayout.vue";
 const toast = useToast();
 const userStore = useUserStore();
 

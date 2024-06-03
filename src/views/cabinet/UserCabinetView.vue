@@ -1,33 +1,34 @@
 <template>
-  <div class="user_page container">
+  <div class="user_page">
 
+    <dashboard-layout>
 
+      User template components will be here
+
+    </dashboard-layout>
 
   </div>
 </template>
 
 <script setup>
-import api from '../../api.js';
-import { useUserStore } from "../../store/userStore";
-import { useToast } from "vue-toastification";
 import { onMounted, ref } from 'vue';
-import {
-  Input,
-  Ripple,
-  initTWE,
-} from "tw-elements";
-import router from "../../router";
-const toast = useToast();
-const userStore = useUserStore();
+import DashboardLayout from "../../components/DashboardLayout.vue";
+import api from "../../api.js";
 
 onMounted(() => {
-  initTWE({ Input, Ripple });
+  requestsFetch();
 });
 
-const storeData = ref({
+const requests = ref(null);
 
-})
-
+const requestsFetch = () =>
+{
+  api.get('/api/request/list').then((r) => {
+    requests.value = r.data.data
+  }).catch((e) => {
+    console.log(e);
+  })
+}
 
 </script>
 

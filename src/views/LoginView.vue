@@ -110,10 +110,10 @@ const form = ref({
   'password': '',
 })
 
-const login = () =>
-{
+const login = () => {
   api.post('/api/user/login', form.value).then((r) => {
     localStorage.setItem('token', r.data.data.token);
+    router.push({path:'/cabinet'});
   }).catch((e) => {
     toast.error(e.data.message, {
       timeout: 3000

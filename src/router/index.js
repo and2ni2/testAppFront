@@ -4,6 +4,7 @@ import LoginView from '../views/LoginView.vue'
 import RegisterView from '../views/RegisterView.vue'
 import ManagerCabinetView from "../views/cabinet/ManagerCabinetView.vue";
 import UserCabinetView from "../views/cabinet/UserCabinetView.vue";
+import ShowRequestView from "../views/cabinet/ShowRequestView.vue";
 import Page403View from "../views/Page403View.vue";
 import Page404View from "../views/Page404View.vue";
 
@@ -28,7 +29,7 @@ const routes = [
     name: 'cabinet-user',
     component: UserCabinetView,
     meta: {
-      access: 'user',
+      access: ['user'],
     },
   },
   {
@@ -36,7 +37,15 @@ const routes = [
     name: 'cabinet-manager',
     component: ManagerCabinetView,
     meta: {
-      access: 'manager',
+      access: ['manager'],
+    },
+  },
+  {
+    path: '/cabinet/request/:id',
+    name: 'cabinet-request',
+    component: ShowRequestView,
+    meta: {
+      access: ['user', 'manager'],
     },
   },
   {

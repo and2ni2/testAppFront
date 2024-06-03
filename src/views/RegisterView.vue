@@ -223,8 +223,7 @@ const form = ref({
 
 const toast = useToast();
 
-const register = () =>
-{
+const register = () => {
   api.post('/api/user/register', form.value).then((r) => {
     toast.success(r.data.messages[0], {
       timeout: 3000
