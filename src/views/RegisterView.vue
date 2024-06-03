@@ -195,7 +195,9 @@
 </template>
 
 
-<script lang="ts">
+<script>
+import axios from 'axios';
+import { useToast } from "vue-toastification";
 import {defineComponent} from 'vue';
 import {
   Input,
@@ -210,6 +212,7 @@ export default defineComponent({
   props: {},
   data() {
     return {
+      toast: useToast(),
       form: {
         'first_name': '',
         'last_name': '',
@@ -225,20 +228,19 @@ export default defineComponent({
 
   methods: {
     register() {
-      fetch('http://localhost/api/user/register',
-          {
-            headers: {
-              'Accept': 'application/json',
-              'Content-Type': 'application/json'
-            },
-            method: "POST",
-            body: JSON.stringify(this.form),
-          }
-      ).then((r) => {
-        console.log('111', r);
+      axios.post('http://localhost/api/user/register', this.form,
+      {
+        'Accept': 'application/json',
+            'Content-Type': 'application/json'
+      },).then((r) => {
+        console.log(r)
+        this.toast.success(r.data.messages[0], {
+          timeout: 3000
+        });
       }).catch((e) => {
-        console.log(e);
-        // this.$swal(e.);
+        this.toast.error(e.response.data.message, {
+          timeout: 4000
+        });
       })
     }
   }

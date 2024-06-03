@@ -1,13 +1,13 @@
 /** @type {import('tailwindcss').Config} */
-module.exports = {
+export default {
   content: [
     "./index.html",
     "./src/**/*.{vue,js,ts,jsx,tsx}",
+    "./node_modules/tw-elements/js/**/*.js"
   ],
   theme: {
     extend: {},
   },
-  darkMode: ['selector', '[data-mode="dark"]'],
-  plugins: [require("tw-elements/plugin.cjs")],
+  plugins: [require("tw-elements/plugin.cjs")]
 }
 
