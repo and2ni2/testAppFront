@@ -9,6 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@devindex/vue-mask": "^2.0.3",
     "axios": "^1.7.2",
     "pinia": "^2.1.7",
     "sweetalert2": "^11.11.0",

@@ -8,6 +8,7 @@ export default {
   theme: {
     extend: {},
   },
+  darkMode: 'selector',
   plugins: [require("tw-elements/plugin.cjs")]
 }
 

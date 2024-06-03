@@ -72,7 +72,7 @@
                 <!--First radio-->
                 <label
                     for="inlineRadioOptions"
-                    class="dark:text-neutral-200 text-gray-500 font- pl-3 pr-5 mb-5"
+                    class="dark:text-neutral-200 text-gray-600 pl-3 pr-5 mb-5"
                 >Пол:
                 </label>
                 <div class="mb-[0.125rem] me-4 inline-block min-h-[1.5rem] ps-[1.5rem]">
@@ -127,7 +127,7 @@
                     type="text"
                     class="peer block min-h-[auto] w-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[2.15] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 peer-focus:text-primary data-[twe-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-white dark:placeholder:text-neutral-300 dark:autofill:shadow-autofill dark:peer-focus:text-primary [&:not([data-twe-input-placeholder-active])]:placeholder:opacity-0"
                     id="mobile"
-                    v-model="form.mobile"/>
+                    v-model="form.mobile" name="mask" v-mask="'+0(000)000-00-00'" />
                 <label
                     for="mobile"
                     class="pointer-events-none absolute left-3 top-0 mb-0 max-w-[90%] origin-[0_0] truncate pt-[0.37rem] leading-[2.15] text-neutral-500 transition-all duration-200 ease-out peer-focus:-translate-y-[1.15rem] peer-focus:scale-[0.8] peer-focus:text-primary peer-data-[twe-input-state-active]:-translate-y-[1.15rem] peer-data-[twe-input-state-active]:scale-[0.8] motion-reduce:transition-none dark:text-neutral-400 dark:peer-focus:text-primary"
@@ -196,7 +196,8 @@
 
 
 <script setup>
-import axios from 'axios';
+import api from '../api.js';
+import router from "../router";
 import { useToast } from "vue-toastification";
 import { onMounted, ref } from 'vue';
 import {
@@ -224,17 +225,15 @@ const toast = useToast();
 
 const register = () =>
 {
-  axios.post('http://localhost/api/user/register', form.value,
-      {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },).then((r) => {
-    console.log(r)
+  api.post('/api/user/register', form.value).then((r) => {
     toast.success(r.data.messages[0], {
       timeout: 3000
     });
+    setTimeout(() => {
+      router.push({path: '/'})
+    }, 3000);
   }).catch((e) => {
-    toast.error(e.response.data.message, {
+    toast.error(e.data.message, {
       timeout: 4000
     });
   })
