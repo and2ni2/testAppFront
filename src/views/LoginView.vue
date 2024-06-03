@@ -84,38 +84,22 @@
   </div>
 </template>
 
-<script lang="ts">
-import {defineComponent} from 'vue';
+<script setup>
+import axios from 'axios';
+import { useToast } from "vue-toastification";
+import { onMounted, ref } from 'vue';
 import {
   Input,
   Ripple,
   initTWE,
 } from "tw-elements";
 
-initTWE({ Input, Ripple });
-
-export default defineComponent({
-  name: 'LoginView',
-  props: {},
+onMounted(() => {
+  initTWE({ Input, Ripple });
 });
+
+const toast = useToast();
+
+
 </script>
 
-<style scoped lang="scss">
-h3 {
-  margin: 40px 0 0;
-}
-
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-
-a {
-  color: #42b983;
-}
-</style>

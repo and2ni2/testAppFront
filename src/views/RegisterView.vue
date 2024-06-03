@@ -195,56 +195,51 @@
 </template>
 
 
-<script>
+<script setup>
 import axios from 'axios';
 import { useToast } from "vue-toastification";
-import {defineComponent} from 'vue';
+import { onMounted, ref } from 'vue';
 import {
   Input,
   Ripple,
   initTWE,
 } from "tw-elements";
 
-initTWE({ Input, Ripple });
+onMounted(() => {
+  initTWE({ Input, Ripple });
+});
 
-export default defineComponent({
-  name: 'RegisterView',
-  props: {},
-  data() {
-    return {
-      toast: useToast(),
-      form: {
-        'first_name': '',
-        'last_name': '',
-        'middle_name': '',
-        'gender': 1,
-        'email': '',
-        'mobile': '',
-        'password': '',
-        'password_confirmation' : ''
-      }
-    }
-  },
+const form = ref({
+  'first_name': '',
+  'last_name': '',
+  'middle_name': '',
+  'gender': 1,
+  'email': '',
+  'mobile': '',
+  'password': '',
+  'password_confirmation' : ''
+})
 
-  methods: {
-    register() {
-      axios.post('http://localhost/api/user/register', this.form,
+const toast = useToast();
+
+const register = () =>
+{
+  axios.post('http://localhost/api/user/register', form.value,
       {
         'Accept': 'application/json',
-            'Content-Type': 'application/json'
+        'Content-Type': 'application/json'
       },).then((r) => {
-        console.log(r)
-        this.toast.success(r.data.messages[0], {
-          timeout: 3000
-        });
-      }).catch((e) => {
-        this.toast.error(e.response.data.message, {
-          timeout: 4000
-        });
-      })
-    }
-  }
-});
+    console.log(r)
+    toast.success(r.data.messages[0], {
+      timeout: 3000
+    });
+  }).catch((e) => {
+    toast.error(e.response.data.message, {
+      timeout: 4000
+    });
+  })
+}
+
 </script>
 
 <style scoped lang="scss">
