@@ -114,7 +114,6 @@ const login = () =>
 {
   api.post('/api/user/login', form.value).then((r) => {
     localStorage.setItem('token', r.data.data.token);
-    userStore.updateStore(r.data.data.user);
   }).catch((e) => {
     toast.error(e.data.message, {
       timeout: 3000
