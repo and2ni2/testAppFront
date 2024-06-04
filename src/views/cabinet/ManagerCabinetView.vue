@@ -27,11 +27,13 @@
 
                 <template v-for="(item, index) in requestsData.data">
                   <tr class="border-b border-neutral-200 dark:border-white/10">
-                    <td class="whitespace-nowrap  px-6 py-4 font-medium"> {{ item.id }} </td>
-                    <td class="whitespace-nowrap  px-6 py-4"> <fwb-button @click="openRequest(item.id)" color="alternative">Открыть</fwb-button> </td>
-                    <td class="whitespace-nowrap  px-6 py-4"> {{item.category.name}} </td>
-                    <td class="whitespace-nowrap  px-6 py-4"> {{item.theme}} </td>
-                    <td class="whitespace-nowrap elipsis px-6 py-4"> {{item.message}} </td>
+                    <td class="whitespace-nowrap  px-6 py-4 font-medium"> {{ item.id }}</td>
+                    <td class="whitespace-nowrap  px-6 py-4">
+                      <fwb-button @click="openRequest(item.id)" color="alternative">Открыть</fwb-button>
+                    </td>
+                    <td class="whitespace-nowrap  px-6 py-4"> {{ item.category.name }}</td>
+                    <td class="whitespace-nowrap  px-6 py-4"> {{ item.theme }}</td>
+                    <td class="whitespace-nowrap elipsis px-6 py-4"> {{ item.message }}</td>
                   </tr>
                 </template>
 
@@ -49,7 +51,9 @@
       </div>
 
       <div v-else>
-        <div class="mt-5 w-full items-center rounded-lg bg-info-100 px-6 py-5 text-base text-info-800 dark:bg-[#11242a] dark:text-info-500" role="alert" id="alert-static-info" data-twe-alert-init="">
+        <div
+            class="mt-5 w-full items-center rounded-lg bg-info-100 px-6 py-5 text-base text-info-800 dark:bg-[#11242a] dark:text-info-500"
+            role="alert" id="alert-static-info" data-twe-alert-init="">
           Активных заявок на данный момент не имеется...
         </div>
       </div>
@@ -61,9 +65,9 @@
 
 <script setup>
 import api from '../../api.js'
-import { useUserStore } from "../../store/userStore";
-import { useToast } from "vue-toastification";
-import { onMounted, ref } from 'vue';
+import {useUserStore} from "../../store/userStore";
+import {useToast} from "vue-toastification";
+import {onMounted, ref} from 'vue';
 import {
   Input,
   Ripple,
@@ -73,11 +77,12 @@ import router from "../../router";
 import DashboardLayout from "../../components/DashboardLayout.vue";
 import {FwbAlert, FwbButton} from "flowbite-vue";
 import {TailwindPagination} from "laravel-vue-pagination";
+
 const toast = useToast();
 const userStore = useUserStore();
 
 onMounted(() => {
-  initTWE({ Input, Ripple });
+  initTWE({Input, Ripple});
 });
 
 const requestsData = ref({});
@@ -86,7 +91,7 @@ onMounted(() => {
   requestsFetch();
 });
 
-const requestsFetch = async(page = 1) => {
+const requestsFetch = async (page = 1) => {
   await api.get(`/api/request/list?page=${page}`).then((r) => {
     requestsData.value = r.data.data
   }).catch((e) => {
@@ -95,7 +100,7 @@ const requestsFetch = async(page = 1) => {
 }
 
 const openRequest = (id) => {
-  router.push({name: 'cabinet-request', params: { id: id }})
+  router.push({name: 'cabinet-request', params: {id: id}})
 }
 
 </script>

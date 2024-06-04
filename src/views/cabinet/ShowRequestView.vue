@@ -3,18 +3,42 @@
 
     <dashboard-layout>
       <template v-if="requestData">
-        <h1 class="mb-4 text-3xl font-extrabold text-gray-900 dark:text-white">Заявка <span class="text-blue-600 dark:text-blue-500"># {{requestData.id}} </span></h1>
+
+        <div style="display: flex">
+          <h1 class="mb-4 text-3xl mr-5 font-extrabold text-gray-900 dark:text-white">Заявка <span
+              class="text-blue-600 dark:text-blue-500"># {{ requestData.id }} </span></h1>
+          <div v-if="requestData.closed_at" class="max-w-[200px]">
+            <fwb-alert type="danger">
+              Закрыта
+            </fwb-alert>
+          </div>
+          <div v-else class="max-w-[200px]">
+            <fwb-alert type="success">
+              В работе
+            </fwb-alert>
+          </div>
+        </div>
+
+
         <p class="mb-4 text-2xl font-extrabold text-gray-900 dark:text-white">
-          Тема: {{requestData.theme}}
+          Тема: {{ requestData.theme }}
         </p>
         <p class="mb-3 text-xl font-extrabold text-gray-800 dark:text-white" v-if="requestData.file_path">
           Файл: <a class="text-blue-600 underline" :href="baseUrl+ '/' +requestData.file_path"> Скачать </a>
         </p>
 
-        <div class="chat_area mt-[40px] mb-[60px] p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
-        <template v-for="message in requestData.messages">
-          <chat-message class="mt-5 mb-5" :user="getFullName(message.user)" :message="message.message" :time="message.created_at"></chat-message>
-        </template>
+        <div v-if="!requestData.closed_at">
+          <fwb-button @click="closeRequest" color="red" >
+            Закрыть заявку
+          </fwb-button>
+        </div>
+
+        <div
+            class="chat_area mt-[40px] mb-[60px] p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+          <template v-for="message in requestData.messages">
+            <chat-message class="mt-5 mb-5" :user="getFullName(message.user)" :message="message.message"
+                          :time="message.created_at"></chat-message>
+          </template>
         </div>
 
         <fwb-textarea
@@ -38,15 +62,16 @@
 
 <script setup>
 import api from '../../api.js';
-import { useUserStore } from "../../store/userStore";
-import { useToast } from "vue-toastification";
+import {useUserStore} from "../../store/userStore";
+import {useToast} from "vue-toastification";
 import {computed, onMounted, ref} from 'vue';
-import { useRoute } from 'vue-router'
+import {useRoute} from 'vue-router'
 
 import router from "../../router";
 import DashboardLayout from "../../components/DashboardLayout.vue";
 import ChatMessage from "../../components/molecules/ChatMessage.vue";
-import {FwbButton, FwbTextarea} from "flowbite-vue";
+import {FwbAlert, FwbButton, FwbTextarea} from "flowbite-vue";
+
 const toast = useToast();
 const userStore = useUserStore();
 const route = useRoute()
@@ -57,7 +82,7 @@ const form = ref({
 })
 
 onMounted(() => {
-    getRequestData();
+  getRequestData();
 });
 
 const requestData = ref(null);
@@ -80,6 +105,19 @@ const sendMessage = async () => {
   }
   await api.post(`/api/request/message/send`, data).then((r) => {
     toast.success(r.data.messages[0], {
+      timeout: 2000
+    });
+    getRequestData();
+  }).catch((e) => {
+    toast.error(e.data.messages[0], {
+      timeout: 3000
+    });
+  })
+}
+
+const closeRequest = async () => {
+  await api.put(`/api/request/close/${requestData.value.id}`).then((r) => {
+    toast.success('Заявка успешно закрыта!', {
       timeout: 2000
     });
     getRequestData();

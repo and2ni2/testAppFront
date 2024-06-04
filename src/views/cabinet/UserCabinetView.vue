@@ -35,24 +35,26 @@
                 <tbody>
 
                 <template v-for="(item, index) in requestsData.data">
-                <tr class="border-b border-neutral-200 dark:border-white/10">
-                  <td class="whitespace-nowrap  px-6 py-4 font-medium"> {{ item.id }} </td>
-                  <td class="whitespace-nowrap  px-6 py-4"> <fwb-button @click="openRequest(item.id)" color="alternative">Открыть</fwb-button> </td>
-                  <td class="whitespace-nowrap  px-6 py-4"> {{ getCategoryName(item.category_id) }} </td>
-                  <td class="whitespace-nowrap  px-6 py-4"> {{item.theme}} </td>
-                  <td class="whitespace-nowrap  px-6 py-4">
+                  <tr class="border-b border-neutral-200 dark:border-white/10">
+                    <td class="whitespace-nowrap  px-6 py-4 font-medium"> {{ item.id }}</td>
+                    <td class="whitespace-nowrap  px-6 py-4">
+                      <fwb-button @click="openRequest(item.id)" color="alternative">Открыть</fwb-button>
+                    </td>
+                    <td class="whitespace-nowrap  px-6 py-4"> {{ getCategoryName(item.category_id) }}</td>
+                    <td class="whitespace-nowrap  px-6 py-4"> {{ item.theme }}</td>
+                    <td class="whitespace-nowrap  px-6 py-4">
                     <span v-if="item.closed_at">
                       <fwb-alert type="danger">
                         Закрыта
                       </fwb-alert>
                     </span>
-                    <span v-else>
+                      <span v-else>
                       <fwb-alert type="success">
                             В работе
                       </fwb-alert>
                     </span>
-                  </td>
-                </tr>
+                    </td>
+                  </tr>
                 </template>
 
                 </tbody>
@@ -69,7 +71,9 @@
       </div>
 
       <div v-else>
-        <div class="mt-5 w-full items-center rounded-lg bg-info-100 px-6 py-5 text-base text-info-800 dark:bg-[#11242a] dark:text-info-500" role="alert" id="alert-static-info" data-twe-alert-init="">
+        <div
+            class="mt-5 w-full items-center rounded-lg bg-info-100 px-6 py-5 text-base text-info-800 dark:bg-[#11242a] dark:text-info-500"
+            role="alert" id="alert-static-info" data-twe-alert-init="">
           У Вас еще нет заявок, создайте новую заявку...
         </div>
       </div>
@@ -86,16 +90,16 @@
           <form>
 
             <fwb-select class="pb-5"
-                v-model="selectedParentCategory"
-                :options="categoriesTree"
-                label="Выберите категорию"
+                        v-model="selectedParentCategory"
+                        :options="categoriesTree"
+                        label="Выберите категорию"
             />
 
             <fwb-select v-if="selectedParentCategory"
-                class="pb-5"
-                v-model="selectedCategory"
-                :options="childrenCategories"
-                label="Выберите подкатегорию"
+                        class="pb-5"
+                        v-model="selectedCategory"
+                        :options="childrenCategories"
+                        label="Выберите подкатегорию"
             />
 
             <fwb-input
@@ -113,7 +117,7 @@
                 placeholder=""
             />
 
-            <fwb-file-input  class="mt-5" v-model="form.file" label="Файл при необходимости" />
+            <fwb-file-input class="mt-5" v-model="form.file" label="Файл при необходимости"/>
 
           </form>
 
@@ -136,12 +140,13 @@
 <script setup>
 import {computed, onMounted, ref} from 'vue';
 import DashboardLayout from "../../components/DashboardLayout.vue";
-import { TailwindPagination } from 'laravel-vue-pagination';
-import { FwbAlert, FwbButton, FwbModal, FwbInput, FwbFileInput, FwbSelect, FwbTextarea } from 'flowbite-vue'
+import {TailwindPagination} from 'laravel-vue-pagination';
+import {FwbAlert, FwbButton, FwbModal, FwbInput, FwbFileInput, FwbSelect, FwbTextarea} from 'flowbite-vue'
 import api from "../../api.js";
 import {useUserStore} from "../../store/userStore.js";
 import router from "../../router/index.js";
 import {useToast} from "vue-toastification";
+
 const userStore = useUserStore();
 const toast = useToast();
 
@@ -171,7 +176,7 @@ const form = ref({
   file: null,
 });
 
-const requestsFetch = async(page = 1) => {
+const requestsFetch = async (page = 1) => {
   await api.get(`/api/request/list?page=${page}`).then((r) => {
     requestsData.value = r.data.data
   }).catch((e) => {
@@ -179,7 +184,7 @@ const requestsFetch = async(page = 1) => {
   })
 }
 
-const getCategories = async() => {
+const getCategories = async () => {
   await api.get(`/api/request/category/list?inline=true`).then((r) => {
     categories.value = r.data.data
   }).catch((e) => {
@@ -187,7 +192,7 @@ const getCategories = async() => {
   })
 }
 
-const getCategoriesTree = async() => {
+const getCategoriesTree = async () => {
   await api.get(`/api/request/category/list`).then((r) => {
     categoriesTree.value = r.data.data
     // Из-за того что компонент селекта не воспринимает айди а берет value
@@ -213,7 +218,7 @@ const getCategoryChildren = () => {
 }
 
 const openRequest = (id) => {
-  router.push({name: 'cabinet-request', params: { id: id }})
+  router.push({name: 'cabinet-request', params: {id: id}})
 }
 
 const createRequest = async () => {
@@ -226,8 +231,8 @@ const createRequest = async () => {
   if (form.value.file) {
     formData.append('file', form.value.file);
     config = {
-      headers:{
-        "Content-Type":'multipart/form-data'
+      headers: {
+        "Content-Type": 'multipart/form-data'
       }
     }
   }
@@ -245,10 +250,11 @@ const createRequest = async () => {
   })
 }
 
-function closeModal () {
+function closeModal() {
   isShowModal.value = false
 }
-function showModal () {
+
+function showModal() {
   isShowModal.value = true
 }
 
@@ -256,18 +262,21 @@ function showModal () {
 </script>
 
 <style lang="scss">
-  .sr-only {
-    display: none;
-  }
-  nav.paginator{
-    display: flex;
-    justify-content: center;
-  }
-  // tailwind colors not working 0_o for paginator temporary
-  .bg-blue-50{
-    background-color: royalblue;
-  }
-  .border-blue-500 {
-    border-color: darkblue;
-  }
+.sr-only {
+  display: none;
+}
+
+nav.paginator {
+  display: flex;
+  justify-content: center;
+}
+
+// tailwind colors not working 0_o for paginator temporary
+.bg-blue-50 {
+  background-color: royalblue;
+}
+
+.border-blue-500 {
+  border-color: darkblue;
+}
 </style>
