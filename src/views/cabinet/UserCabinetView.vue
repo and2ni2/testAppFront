@@ -4,7 +4,7 @@
     <dashboard-layout>
 
       <div class="mb-3">
-      Здравствуйте {{ userStore.getFullName }}!
+        Здравствуйте {{ userStore.getFullName }}!
       </div>
 
       <button
