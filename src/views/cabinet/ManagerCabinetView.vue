@@ -21,6 +21,9 @@
                   <th scope="col" class=" px-6 py-4">Категория</th>
                   <th scope="col" class=" px-6 py-4">Тема</th>
                   <th scope="col" class=" px-6 py-4">Сообщение</th>
+                  <th scope="col" class=" px-6 py-4">Клиент</th>
+                  <th scope="col" class=" px-6 py-4">Email</th>
+                  <th scope="col" class=" px-6 py-4">Телефон</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -34,6 +37,9 @@
                     <td class="whitespace-nowrap  px-6 py-4"> {{ item.category.name }}</td>
                     <td class="whitespace-nowrap  px-6 py-4"> {{ item.theme }}</td>
                     <td class="whitespace-nowrap elipsis px-6 py-4"> {{ item.message }}</td>
+                    <td class="whitespace-nowrap px-6 py-4"> {{ item.user.full_name }}</td>
+                    <td class="whitespace-nowrap px-6 py-4"> {{ item.user.email }}</td>
+                    <td class="whitespace-nowrap px-6 py-4"> {{ item.user.mobile }}</td>
                   </tr>
                 </template>
 
