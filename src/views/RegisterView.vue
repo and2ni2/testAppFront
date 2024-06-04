@@ -232,9 +232,15 @@ const register = () => {
       router.push({path: '/'})
     }, 3000);
   }).catch((e) => {
-    toast.error(e.data.message, {
-      timeout: 4000
-    });
+    if (e.data.messages && e.data.messages[0]) {
+      toast.error(e.data.messages[0], {
+        timeout: 3000
+      });
+    } else if (e.data.message) {
+      toast.error(e.data.message, {
+        timeout: 3000
+      });
+    }
   })
 }
 
